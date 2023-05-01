@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: orders
+    schema: public
+    tables:
+      - name: orders
+
+models:
+  - name: orders_transformed
+    columns:
+      - name: order_id
+        meta:
+          dbt_type: string
+      - name: customer_id
+        meta:
+          dbt_type: string
+      - name: product_id
+        meta:
+          dbt_type: string
+      - name: price
+        meta:
+          dbt_type: numeric
+      - name: date
+        meta:
+          dbt_type: date
+    unique_key: [order_id]
+    sort: order_id
+    sql: |
+      SELECT
+        CAST(order_id AS TEXT) AS order_id,
+        CAST(customer_id AS TEXT) AS customer_id,
+        CAST(product_id AS TEXT) AS product_id,
+        CAST(price AS NUMERIC) AS price,
+        CAST(date AS DATE) AS date
+      FROM {{ source
